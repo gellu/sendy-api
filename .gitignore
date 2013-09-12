@@ -1,0 +1,7 @@
+.buildpath
+.idea/
+.project
+.settings/
+.DS_Store
+vendor/*
+
