@@ -1,0 +1,4 @@
+sendy-api
+=========
+
+Sendy API
