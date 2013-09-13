@@ -9,6 +9,10 @@ $config = require 'config.php';
 
 $app = new \Slim\Slim($config['slim']);
 
+$app->notFound(function () use ($app) {
+	echo json_encode(array('status' => 'error', 'result' => 'Method not found'));
+});
+
 try {
 	$db = new PDO('mysql:dbname='. $config['pdo']['name'] .';host='. $config['pdo']['host'], $config['pdo']['user'], $config['pdo']['pass']);
 } catch (PDOException $e) {
