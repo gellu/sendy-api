@@ -16,7 +16,6 @@ Example: `[your_api_uri]/subscribers/get/list?app_key=[your_app_key]&list=1`
 ## Methods ##
 
 ### Subscribers ###
-========
 
 **/subscribers/add/user**
 
@@ -54,7 +53,6 @@ params: `email` - subscriber email
 return: `number of truncated subscribers`
  
 ### Lists ###
-========
 
 **/lists/get**
 
