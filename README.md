@@ -33,7 +33,7 @@ return: `list of subscribers`
 
 **/subscribers/get/user**
 
-description: Get subscribers by email 
+description: Get subscribers by email  
 method: `GET`  
 params: `email` - subscriber email  
 return: `subscriber`
