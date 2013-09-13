@@ -10,7 +10,7 @@ $config = require 'config.php';
 $app = new \Slim\Slim($config['slim']);
 
 try {
-	$db = new PDO('mysql:dbname='. $config['pdo']['name'] .';host='. $config['pdo']['host'], $config['pdo']['user'], $config['pdo']['password']);
+	$db = new PDO('mysql:dbname='. $config['pdo']['name'] .';host='. $config['pdo']['host'], $config['pdo']['user'], $config['pdo']['pass']);
 } catch (PDOException $e) {
 	echo 'Connection failed: ' . $e->getMessage();
 }
