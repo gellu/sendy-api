@@ -1,6 +1,7 @@
 # Sendy API #
 
-RESTful API for [Sendy](http://www.sendy.co) build with [Slim](http://www.github.com/codeguy/Slim)
+RESTful API for [Sendy](http://www.sendy.co) build with [Slim](http://www.github.com/codeguy/Slim)  
+Sendy-api works on original sendy DB, so **it has to be hosted on the same server as Sendy**.
 
 ## Installation ##
 
