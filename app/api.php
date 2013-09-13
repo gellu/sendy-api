@@ -23,6 +23,7 @@ $app->add(new \APIAuthMiddleware($db));
 $app->add(new \APIResponseMiddleware());
 
 require '../src/Subscribers.php';
+require '../src/Lists.php';
 
 $app->run();
 
