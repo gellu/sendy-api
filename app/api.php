@@ -15,6 +15,7 @@ $app->notFound(function () use ($app) {
 
 try {
 	$db = new PDO('mysql:dbname='. $config['pdo']['name'] .';host='. $config['pdo']['host'], $config['pdo']['user'], $config['pdo']['pass']);
+	$db->exec("SET CHARACTER SET utf8");
 } catch (PDOException $e) {
 	echo 'Connection failed: ' . $e->getMessage();
 }
