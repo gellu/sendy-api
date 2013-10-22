@@ -9,6 +9,13 @@ $config = require 'config.php';
 
 $app = new \Slim\Slim($config['slim']);
 
+# fix for setting correct PATH_INFO
+$requestPath = parse_url($_SERVER['REQUEST_URI'])['path'];
+$env = $app->environment;
+$env['PATH_INFO'] = substr($requestPath, 0, strlen($env['SCRIPT_NAME'])) == $env['SCRIPT_NAME']
+	? substr_replace($requestPath, '', 0, strlen($env['SCRIPT_NAME'])) : $requestPath ;
+# fix end
+
 $app->notFound(function () use ($app) {
 	echo json_encode(array('status' => 'error', 'result' => 'Method not found'));
 });
