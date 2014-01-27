@@ -56,6 +56,15 @@ $app->group('/subscribers', function() use ($app, $db){
 			echo json_encode(array('status' => 'ok', 'result' => $res));
 		});
 
+		$app->get('/unsubscribed', function() use ($app, $db) {
+
+			$sth = $db->prepare('SELECT email FROM subscribers WHERE unsubscribed = "1"');
+			$sth->execute();
+			$res = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+			echo json_encode(array('status' => 'ok', 'result' => $res));
+		});
+
 		$app->get('/user', function() use ($app, $db) {
 
 			if(!$app->request()->get('email'))
