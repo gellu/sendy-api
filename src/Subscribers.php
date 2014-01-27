@@ -32,8 +32,11 @@ $app->group('/subscribers', function() use ($app, $db){
 			$app->stop();
 		}
 
-		$sth = $db->prepare('INSERT INTO subscribers SET email = :email, list = :list, `timestamp` = :timestamp');
-		$sth->execute(array('email' => $post['email'], 'list' => $post['list'], 'timestamp' => time()));
+		$sth = $db->prepare('INSERT INTO subscribers SET email = :email, list = :list, unsubscribed = :unsubscribed, `timestamp` = :timestamp');
+		$sth->execute(array('email' 		=> $post['email'],
+							'list' 			=> $post['list'],
+							'unsubscribed' 	=> $post['unsubscribed'] == 1 ? 1 : 0,
+							'timestamp' 	=> time()));
 
 		echo json_encode(array('status' => 'ok', 'result' => $sth->rowCount()));
 
