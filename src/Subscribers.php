@@ -60,7 +60,7 @@ $app->group('/subscribers', function() use ($app, $db){
 
 			$sth = $db->prepare('SELECT email FROM subscribers WHERE unsubscribed = "1"');
 			$sth->execute();
-			$res = $sth->fetchAll(PDO::FETCH_ASSOC);
+			$res = $sth->fetchAll(PDO::FETCH_COLUMN, 0);
 
 			echo json_encode(array('status' => 'ok', 'result' => $res));
 		});
