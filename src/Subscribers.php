@@ -9,7 +9,7 @@ $app->group('/subscribers', function() use ($app, $db){
 
     $app->post('/user/add', function() use ($app, $db) {
 
-        $post = $app->request->params();
+        $post = $app->request->post();
 
         if(!$post['email'] || !$post['list'] )
         {
@@ -60,7 +60,7 @@ $app->group('/subscribers', function() use ($app, $db){
 
     $app->post('/user/subscribe', function() use ($app, $db) {
 
-        $post = $app->request->params();
+        $post = $app->request->post();
 
         if(!$post['email'] || !$post['list'])
         {
@@ -94,7 +94,7 @@ $app->group('/subscribers', function() use ($app, $db){
 
     $app->post('/user/unsubscribe', function() use ($app, $db) {
 
-        $post = $app->request->params();
+        $post = $app->request->post();
 
         if(!$post['email'] || !$post['list'])
         {

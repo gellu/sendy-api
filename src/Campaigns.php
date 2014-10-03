@@ -25,12 +25,6 @@ $app->group('/campaigns', function() use ($app, $db) {
 
     $app->get('/show', function() use ($app, $db) {
 
-        if(!$app->request()->get('app_key'))
-        {
-            echo json_encode(array('status' => 'error', 'result' => 'Parameter [app_key] is missing'));
-            $app->stop();
-        }
-
         //get app_key
         $sth = $db->prepare('SELECT id FROM apps WHERE app_key = :app_key');
         $sth->execute(array('app_key' => $app->request()->get('app_key')));
