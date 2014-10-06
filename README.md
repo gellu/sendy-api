@@ -18,11 +18,25 @@ Example: `[your_api_uri]/subscribers/get/list?app_key=[your_app_key]&list=1`
 
 ### Subscribers ###
 
-**/subscribers/add/user**
+**/subscribers/user/add**
 
 description: Add user to subscribers list  
 method: `POST`  
-params: `email` - subscriber email, `list` - list id  
+params: `email` - subscriber email, `list` - list id , `name` = subscriber name
+return: `number of created subscribers`
+
+**/subscribers/user/subscribe**
+
+description: Subscribe user to list  
+method: `POST`  
+params: `email` - subscriber email, `list` - list id
+return: `number of created subscribers`
+
+**/subscribers/user/unsubscribe**
+
+description: Unsubscribe user from list  
+method: `POST`  
+params: `email` - subscriber email, `list` - list id
 return: `number of created subscribers`
 
 **/subscribers/get/list**
@@ -52,7 +66,7 @@ description: Delete user from subscribers (all subscriber lists)
 method: `GET`  
 params: `email` - subscriber email  
 return: `number of truncated subscribers`
- 
+
 ### Lists ###
 
 **/lists/get**
@@ -61,3 +75,26 @@ description: Get lists by name wildcard
 method: `GET`  
 params: `name` - wildcard name  
 return: `lists`
+
+**/lists/show**
+
+description: Show all lists by account API  
+method: `GET`  
+params: `app_key` - App API key  
+return: `lists`
+
+### Campaigns ###
+
+**/campaigns/get**
+
+description: Get campaign info 
+method: `GET`  
+params: `id` - campaign id  
+return: `campaign`
+
+**/campaigns/show**
+
+description: Show all campaigns by account  
+method: `GET`  
+params: `app_key` - App API key  
+return: `campaigns`

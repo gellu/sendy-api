@@ -36,6 +36,7 @@ $app->add(new \APIResponseMiddleware());
 
 require '../src/Subscribers.php';
 require '../src/Lists.php';
+require '../src/Campaigns.php';
 
 $app->run();
 
