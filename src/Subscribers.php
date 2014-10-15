@@ -17,9 +17,9 @@ $app->group('/subscribers', function() use ($app, $db){
             $app->stop();
         }
 
-        if(!$post['name'] )
+        if(!isset($post['name']))
         {
-            $post['name']='';
+            $post['name'] = '';
         }
 
         $list = $db->query('SELECT * FROM lists WHERE id = '. (int) $post['list'])->fetch(PDO::FETCH_ASSOC);
