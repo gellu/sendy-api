@@ -95,6 +95,7 @@ $app->group('/subscribers', function() use ($app, $db){
     $app->post('/user/unsubscribe', function() use ($app, $db) {
 
         $post = $app->request->post();
+        $count = 0;
 
         if(!$post['email'] || !$post['list'])
         {
@@ -108,22 +109,35 @@ $app->group('/subscribers', function() use ($app, $db){
             echo json_encode(array('status' => 'error', 'result' => 'List not found'));
             $app->stop();
         }
-
-        $sth = $db->prepare('SELECT * FROM subscribers WHERE list = :list AND email = :email');
-        $sth->execute(array('list' => $post['list'], 'email' => $post['email']));
-
-        if(count($sth->fetchAll(PDO::FETCH_ASSOC)) <= 0)
+        
+        // Unsubscribe from all lists
+        if($list['unsubscribe_all_list'] === '1')
         {
-            echo json_encode(array('status' => 'error', 'result' => 'User not on the list'));
-            $app->stop();
+            //check if user exists in db
+            $sth = $db->prepare('SELECT * FROM subscribers WHERE email = :email');
+            $sth->execute(array('email' => $post['email']));
+            $subscribers = $sth->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($subscribers as $subscriber) 
+            {
+                $sth = $db->prepare('UPDATE subscribers SET `unsubscribed` = "1", `timestamp` = :timestamp WHERE id = :id');
+                $sth->execute(array('id' => $subscriber['id'], 'timestamp' => time()));
+            }
+            $count = count($subscribers);
         }
+        else
+        {
+            $sth = $db->prepare('SELECT * FROM subscribers WHERE list = :list AND email = :email');
+            $sth->execute(array('list' => $post['list'], 'email' => $post['email']));
 
-        //Don't worry about current state, just update
-        $sth = $db->prepare('UPDATE subscribers SET `unsubscribed` = "1", `timestamp` = :timestamp WHERE list = :list AND email = :email');
-        $sth->execute(array('list' => $post['list'], 'email' => $post['email'], 'timestamp' 	=> time()));
-
-        echo json_encode(array('status' => 'ok', 'result' => $sth->rowCount()));
-
+            if(count($sth->fetchAll(PDO::FETCH_ASSOC)) > 0)
+            {
+                //Don't worry about current state, just update
+                $sth = $db->prepare('UPDATE subscribers SET `unsubscribed` = "1", `timestamp` = :timestamp WHERE list = :list AND email = :email');
+                $sth->execute(array('list' => $post['list'], 'email' => $post['email'], 'timestamp' => time()));
+                $count = $sth->rowCount();
+            }
+        }
+        echo json_encode(array('status' => 'ok', 'result' => $count));
     });
 
     $app->group('/get', function() use ($app, $db)  {
@@ -230,4 +244,3 @@ $app->group('/subscribers', function() use ($app, $db){
     });
 
 });
-
