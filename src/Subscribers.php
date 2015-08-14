@@ -3,6 +3,7 @@
  * Created by: gellu    
  * Date: 12.09.2013 15:58
  * Modified: 29.09.2014 16:53 AEST By: Synergi
+ * Modified: 14.08.2015 By: fernandopg
  */
 
 $app->group('/subscribers', function() use ($app, $db){
@@ -95,7 +96,6 @@ $app->group('/subscribers', function() use ($app, $db){
     $app->post('/user/unsubscribe', function() use ($app, $db) {
 
         $post = $app->request->post();
-        $count = 0;
 
         if(!$post['email'] || !$post['list'])
         {
@@ -116,13 +116,11 @@ $app->group('/subscribers', function() use ($app, $db){
             //check if user exists in db
             $sth = $db->prepare('SELECT * FROM subscribers WHERE email = :email');
             $sth->execute(array('email' => $post['email']));
-            $subscribers = $sth->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($subscribers as $subscriber) 
+            if(count($sth->fetchAll(PDO::FETCH_ASSOC)) > 0)
             {
-                $sth = $db->prepare('UPDATE subscribers SET `unsubscribed` = "1", `timestamp` = :timestamp WHERE id = :id');
-                $sth->execute(array('id' => $subscriber['id'], 'timestamp' => time()));
+                $sth = $db->prepare('UPDATE subscribers SET `unsubscribed` = "1", `timestamp` = :timestamp WHERE email = :email');
+                $sth->execute(array('email' => $post['email'], 'timestamp' => time()));
             }
-            $count = count($subscribers);
         }
         else
         {
@@ -134,10 +132,9 @@ $app->group('/subscribers', function() use ($app, $db){
                 //Don't worry about current state, just update
                 $sth = $db->prepare('UPDATE subscribers SET `unsubscribed` = "1", `timestamp` = :timestamp WHERE list = :list AND email = :email');
                 $sth->execute(array('list' => $post['list'], 'email' => $post['email'], 'timestamp' => time()));
-                $count = $sth->rowCount();
             }
         }
-        echo json_encode(array('status' => 'ok', 'result' => $count));
+        echo json_encode(array('status' => 'ok', 'result' => $sth->rowCount()));
     });
 
     $app->group('/get', function() use ($app, $db)  {
